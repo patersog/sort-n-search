@@ -8,18 +8,18 @@
 <script>
 export default {
   name: "DataPoint",
-  props: ["value"]
+  props: ["value", "selected"]
 };
 </script>
 
 <style scoped>
 .data-point {
-  background-color: lightblue;
-  border: 2px solid lightblue;
+  background-color: #415972;
+  border: 2px solid rgb(90, 90, 90);
   border-radius: 3px;
   display: inline-block;
-  width: 1em;
-  height: 1em;
+  width: 1.5em;
+  height: 1.5em;
   padding: 0.5em;
   margin: 0.2em;
 }
@@ -28,5 +28,8 @@ export default {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+  font-weight: 600;
+  font-family: "Roboto Mono", monospace;
+  color: rgb(22, 22, 22);
 }
 </style>

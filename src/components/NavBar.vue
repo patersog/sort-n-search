@@ -1,13 +1,6 @@
 <template>
 	<footer>
-    <div>
       <p>© 2018 Gianluca N. Paterson</p>
-      <nav>
-        <a href="/home">home</a>
-        <a href="/about">about</a>
-        <a href="/github">github</a>
-      </nav>
-    </div>
 	</footer>
 </template>
 
@@ -17,10 +10,7 @@ export default {};
 
 <style scoped>
 footer {
-  border-top: 2px solid rgb(3, 78, 53);
-  background-color: rgb(17, 112, 80);
-  display: flex;
-  justify-content: center;
+  background-color: rgb(90, 90, 90);
   padding: 0.5em 0.25em;
   position: fixed;
   bottom: 0;
@@ -29,15 +19,8 @@ footer {
   z-index: 1;
 }
 
-div {
-  width: 650px;
-  max-width: 650px;
-  display: flex;
-  justify-content: space-around;
-}
-
 div p {
-  margin-left: 0.5em;
+  font-size: 1.2ch;
   color: whitesmoke;
 }
 

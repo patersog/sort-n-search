@@ -9,6 +9,8 @@
 <script>
 import DataPoint from "./DataPoint";
 
+// import algorithms from "../algorithms";
+
 export default {
   name: "Display",
   props: {
@@ -16,6 +18,9 @@ export default {
       type: Array,
       required: true
     }
+  },
+  methods: {
+    applyAlgorithm() {}
   },
   components: {
     DataPoint
@@ -25,15 +30,14 @@ export default {
 
 <style scoped>
 .display {
-  height: 80vh;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  height: 80vh;
 }
 .data-list {
   list-style-type: none;
-  margin: 0;
+  margin: 1em auto;
   padding: 0.5em;
-  max-width: 400px;
-  text-align: initial;
+  max-width: 650px;
 }
 </style>
