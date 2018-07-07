@@ -12,7 +12,7 @@ export default {
     value: {
       type: Number
     },
-    selected: {
+    active: {
       type: String
     }
   },
@@ -25,7 +25,7 @@ export default {
 <style scoped>
 .data-point {
   background-color: #415972;
-  border: 2px solid rgb(90, 90, 90);
+  border: 1px solid #415972;
   border-radius: 3px;
   display: inline-block;
   width: 1.5em;
@@ -41,5 +41,9 @@ export default {
   font-weight: 600;
   font-family: "Roboto Mono", monospace;
   color: rgb(22, 22, 22);
+}
+
+.active {
+  color: lightblue;
 }
 </style>

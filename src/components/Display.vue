@@ -1,7 +1,7 @@
 <template>
 	<div class="display">
 		<ul class="data-list">
-			<data-point v-for="(value, index) in list" :key="index" :value="value"/>
+			<data-point v-for="(value, index) in arr" :key="index" :value="value"/>
 		</ul>
 	</div>
 </template>
@@ -14,7 +14,7 @@ import DataPoint from "./DataPoint";
 export default {
   name: "display",
   props: {
-    list: {
+    arr: {
       type: Array,
       required: true
     }

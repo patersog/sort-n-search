@@ -13,9 +13,10 @@
 			:algorithmType=algorithmType
 			v-on:request-pre-sort="handlePreSortRequest" 
 			v-on:request-algorithm="handleAlgorithmRequest"
-			v-on:run-algorithm="handleRunAlgorithm"/>
-		<display v-if="!preSorted" :list="list" />
-		<display v-else :list="sortedList" />
+			v-on:run-algorithm="handleRunAlgorithm"
+			v-on:reset="handleReset"/>
+		<display v-if="!preSorted" :arr="arr" />
+		<display v-else :arr="sortedArray" />
 		<foot />
   </div>
 </template>
@@ -25,16 +26,17 @@ import Display from "./Display";
 import ActionBar from "./ActionBar";
 import Foot from "./Foot";
 
-import { algorithms, test } from "../algorithms";
+import { algorithms, test } from "../algorithm_utils";
 
 export default {
   name: "App",
   data() {
     return {
-      list: [...test.arrayData],
+      arr: [...test.arrayData],
+      display_arr: [],
+      actions: [],
       algorithmType: "sort",
       algorithm: "",
-      action: {},
       preSorted: false,
       run: false
     };
@@ -47,15 +49,28 @@ export default {
       this.algorithm = requestedAlgorithm;
     },
     handleRunAlgorithm() {
-      this.run = true;
+      if (this.algorithm) {
+        console.log("running!");
+        this.run = true;
+      }
     },
     handleReset() {
-      this.list = [...test.arrayData];
+      console.log("resetting application...");
+      this.arr = [...test.arrayData];
+      this.display_arr = [];
+      this.algorithmType = "sort";
+      this.algorithm = "";
+      this.action = {};
+      this.preSorted = false;
+      this.run = false;
+    },
+    getAlgorithm() {
+      console.log(this.algorithm);
     }
   },
   computed: {
-    sortedList: function() {
-      return this.list.map(el => el).sort((a, b) => a - b);
+    sortedArray: function() {
+      return this.arr.map(el => el).sort((a, b) => a - b);
     }
   },
   components: {

@@ -1,16 +1,14 @@
-//import sort from "./sort";
+// const sort = require("./sort");
 const search = require("./search");
 const { array: arrayData } = require("./data/array-data");
 
 const algorithms = {
   search
+  //   sort
 };
 
 const test = {
   arrayData
 };
 
-module.exports = {
-  algorithms,
-  test
-};
+export { algorithms, test };

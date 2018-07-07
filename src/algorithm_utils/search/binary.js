@@ -1,4 +1,4 @@
-export const binary = (arr, lookup) => {
+const binary = (arr, lookup) => {
   const tracker = {
     steps: 0,
     lookup
@@ -29,4 +29,4 @@ const _binary = (arr, tracker, start, end) => {
   }
 };
 
-export default binary;
+export { binary };
