@@ -7,8 +7,18 @@
 
 <script>
 export default {
-  name: "DataPoint",
-  props: ["value", "selected"]
+  name: "data-point",
+  props: {
+    value: {
+      type: Number
+    },
+    selected: {
+      type: String
+    }
+  },
+  watch: {
+    value(newValue, oldValue) {}
+  }
 };
 </script>
 

@@ -1,7 +1,7 @@
 <template>
 	<div class="display">
 		<ul class="data-list">
-			<data-point v-for="(value, index) in list" v-bind:key="index" v-bind:value="value"/>
+			<data-point v-for="(value, index) in list" :key="index" :value="value"/>
 		</ul>
 	</div>
 </template>
@@ -12,15 +12,12 @@ import DataPoint from "./DataPoint";
 // import algorithms from "../algorithms";
 
 export default {
-  name: "Display",
+  name: "display",
   props: {
     list: {
       type: Array,
       required: true
     }
-  },
-  methods: {
-    applyAlgorithm() {}
   },
   components: {
     DataPoint

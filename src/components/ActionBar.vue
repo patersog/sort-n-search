@@ -1,11 +1,21 @@
 <template>
 	<div class="action-bar">
-		<button v-bind:class="buttonClasses" v-on:click="requestSort">pre-sort</button>
-		<div class="algo-select">
-			<select v-model="requestAlgorithm">
-				<option disabled value="">Select a Sorting Algorithm</option>
-				<option v-for="(option, index) in options" :key="index" :value="option">{{option}}</option>
-			</select>
+		<div class="top">
+			<button :class="preSortButtonClass" v-on:click="requestPreSort">pre-sort</button>
+			<div class="algo-select">
+				<select v-model="selected">
+					<option disabled value="">choose an algorithm</option>
+					<option v-for="(option, index) in options" :key="index" :value="option">{{option}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="bottom">
+			<div v-if="!run">
+				<button  class="control-btn play" :click="runAlgorithm"></button>
+			</div>
+			<div>
+				<button class="control-btn reset" :click="requestReset"></button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -14,19 +24,39 @@
 export default {
   props: {
     preSorted: Boolean,
-    algorithmType: String
+    run: Boolean,
+    algorithmType: String,
+    algorithm: String
+  },
+  data() {
+    return {
+      selected: ""
+    };
   },
   methods: {
-    requestSort() {
-      this.$emit("requestSort");
+    requestPreSort() {
+      this.$emit("request-pre-sort");
+    },
+    requestReset() {
+      this.$emit("resest-algorithm");
     },
     requestAlgorithm() {
-      this.$emit("requestAlgorithm");
+      this.$emit("request-algorithm", this.selected);
+    },
+    runAlgorithm() {
+      this.$emit("run-algorithm");
+    }
+  },
+  watch: {
+    selected() {
+      this.requestAlgorithm();
     }
   },
   computed: {
-    buttonClasses() {
-      return !this.preSorted ? "btn not-clicked" : "btn clicked";
+    preSortButtonClass() {
+      return !this.preSorted
+        ? "pre-sort-btn not-clicked"
+        : "pre-sort-btn clicked";
     },
     options() {
       switch (this.algorithmType) {
@@ -48,32 +78,90 @@ export default {
   padding: 0.5em 0;
 }
 
-.btn {
+.top {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pre-sort-btn {
   background-color: transparent;
-  border: 0;
-  border-bottom: 1px solid #2c3e50;
+  border-radius: 3px;
+  border: 1px solid #2c3e50;
   cursor: pointer;
   font-weight: 400;
-  height: 2.5vh;
-  margin: 0.5em 0.3em 0.5em 0;
+  height: 2em;
+  margin-right: 0.4em;
   width: 10em;
   text-align: center;
   text-transform: uppercase;
   transition: 800ms ease all;
 }
 
-.clicked {
-  border-bottom: 1px solid lightblue;
+.pre-sort-btn:hover {
   color: lightblue;
+  transition: 800ms ease all;
+}
+
+.clicked {
+  border-color: lightblue;
+  color: lightblue;
+}
+
+.clicked:hover {
+  border: #2c3e50;
+  transition: 800ms ease all;
 }
 
 .not-clicked {
   color: rgb(22, 22, 22);
 }
 
-.btn:hover {
-  border-bottom: 1px solid lightblue;
-  transition: 800ms ease all;
+.bottom {
+  display: inline-block;
+  background-color: #2c3e50;
+}
+
+.bottom > div {
+  display: inline-block;
+  width: 1.8em;
+  height: 1.8em;
+  padding: 0.1em;
+  text-align: center;
+}
+
+.control-btn {
+  border: 0;
+  background: transparent;
+  box-sizing: border-box;
+  border-color: #2c3e50;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  transition: 800ms all ease;
+}
+
+.control-btn:hover {
+  border-left-color: lightblue;
+  color: lightblue;
+}
+
+.step-forward {
+}
+
+.step-back {
+}
+
+.play {
+  border-left-color: rgb(22, 22, 22);
+  border-style: solid;
+  border-width: 0.9em 0 0.9em 1.8em;
+}
+
+.pause {
+}
+
+.reset {
 }
 
 select {
@@ -87,6 +175,7 @@ select {
   border-bottom-left-radius: 0.25em;
   background: #34495e;
   background-image: none;
+  text-align: center;
 }
 
 select {
@@ -102,29 +191,26 @@ select::-ms-expand {
   display: none;
 }
 
-.algo-select::hover {
-  border: 1px solid #34495e;
-}
-
 .algo-select {
-  display: inline-block;
-  width: 8.6em;
-  height: 2.5vh;
-  margin: 0.5em 0 0.5em 0.3em;
-  border: #2c3e50;
+  border: 1px solid #34495e;
   border-radius: 0.25em;
   border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   background: #34495e;
+  display: block;
+  height: 1.6em;
+  margin-left: 0.1em;
+  width: 8em;
 }
 
 .algo-select::after {
   content: "\25BC";
   position: absolute;
-  font-size: 1.2ch;
-  border: 0;
+  top: 5.43em;
   border-top-right-radius: 0.25em;
   border-bottom-right-radius: 0.25em;
-  padding: 0 0.5em 0 0;
+  font-size: 1em;
+  padding: 0.1em 0.3em 0.1em 0.1em;
   color: rgb(22, 22, 22);
   background: #34495e;
   pointer-events: none;

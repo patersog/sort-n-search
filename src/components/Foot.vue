@@ -10,7 +10,7 @@ export default {};
 
 <style scoped>
 footer {
-  background-color: rgb(90, 90, 90);
+  background-color: #2c3e50;
   padding: 0.5em 0.25em;
   position: fixed;
   bottom: 0;
@@ -21,7 +21,7 @@ footer {
 
 div p {
   font-size: 1.2ch;
-  color: whitesmoke;
+  color: lightblue;
 }
 
 nav {
