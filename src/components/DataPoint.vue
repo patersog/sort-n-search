@@ -12,12 +12,21 @@ export default {
     value: {
       type: Number
     },
-    active: {
+    state: {
       type: String
     }
   },
-  watch: {
-    value(newValue, oldValue) {}
+  computed: {
+    dataPointClass() {
+      switch (this.state) {
+        case "swap":
+          return "data-value swap";
+        case "compare":
+          return "data-value compare";
+        default:
+          return "data-value";
+      }
+    }
   }
 };
 </script>
@@ -43,7 +52,13 @@ export default {
   color: rgb(22, 22, 22);
 }
 
-.active {
-  color: lightblue;
+.compare {
+  color: rgb(118, 209, 57);
+  border-color: rgb(118, 209, 57);
+}
+
+.swap {
+  color: rgb(224, 115, 43);
+  border-color: rgb(224, 115, 43);
 }
 </style>

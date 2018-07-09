@@ -1,24 +1,48 @@
 <template>
 	<div class="display">
-		<ul class="data-list">
-			<data-point v-for="(value, index) in arr" :key="index" :value="value"/>
-		</ul>
+		<div class="list-display">
+			<ul class="data-list">
+				<data-point v-for="(value, index) in displayArray" :key="index" :value="value" :state="step._i === index || step._j === index ? step.action : step.action"></data-point>
+			</ul>
+		</div>
+		<div class="action">
+			<span>Action: {{step.action}}</span>
+			<span>Comparing: {{!step._i && !step._j? "nothing" : step._i + " with " + step._j}}</span>
+			<span>Step: {{!step.num ? "none" : step.num}}</span>
+		</div>
 	</div>
 </template>
 
 <script>
 import DataPoint from "./DataPoint";
-
-// import algorithms from "../algorithms";
-
+const validate = { compare: true, swap: true, done: true, none: true };
 export default {
   name: "display",
   props: {
-    arr: {
+    displayArr: {
       type: Array,
       required: true
+    },
+    step: {
+      type: Object,
+      default: function() {
+        return { action: "none", _i: null, _j: null, num: null };
+      },
+      validator: function(step) {
+        return validate[step.action];
+      }
     }
   },
+  data() {
+    return {
+	  displayArray: [...this.displayArr],
+	  step: {}
+    };
+  },
+  watch: {
+	  step() {
+
+	  },
   components: {
     DataPoint
   }
@@ -28,7 +52,8 @@ export default {
 <style scoped>
 .display {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-around;
   height: 80vh;
 }
 .data-list {
@@ -36,5 +61,10 @@ export default {
   margin: 1em auto;
   padding: 0.5em;
   max-width: 650px;
+}
+
+.action {
+  display: flex;
+  flex-direction: column;
 }
 </style>

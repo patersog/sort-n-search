@@ -1,6 +1,6 @@
 <template>
 	<div class="action-bar">
-			<button :class="preSortButtonClass" v-on:click="requestPreSort">pre-sort</button>
+			<button :class="preSortButtonClass" v-on:click="requestPreSort" :disabled="!canSort">pre-sort</button>
 			<button :class="runButtonClass" v-on:click="runAlgorithm" :disabled="!canRun">run</button>
 			<button class="control-btn reset" v-on:click="requestReset">reset</button>
 			<div class="algo-select">
@@ -16,12 +16,13 @@
 export default {
   props: {
     preSorted: Boolean,
-    algorithmType: String
+    algorithmType: String,
+    running: Boolean
   },
   data() {
     return {
       selected: "",
-      running: false
+      searchTerm: ""
     };
   },
   methods: {
@@ -31,15 +32,20 @@ export default {
     requestReset() {
       this.$emit("reset");
       this.selected = "";
-      this.running = false;
     },
-    requestAlgorithm() {
-      this.$emit("request-algorithm", this.selected);
+    requestAlgorithm(selected) {
+      this.$emit("request-algorithm", selected);
     },
     runAlgorithm() {
-      console.log("running...");
-      this.running = true;
       this.$emit("run-algorithm");
+    }
+  },
+  watch: {
+    selected() {
+      this.requestAlgorithm(this.selected);
+    },
+    algorithmType() {
+      this.selected = "";
     }
   },
   computed: {
@@ -54,7 +60,7 @@ export default {
     options() {
       switch (this.algorithmType) {
         case "sort":
-          return ["quick", "merge"];
+          return ["quick", "merge", "bubble"];
         case "search":
           return ["linear", "binary"];
         default:
@@ -63,6 +69,12 @@ export default {
     },
     canRun() {
       if (this.selected) {
+        return true;
+      }
+      return false;
+    },
+    canSort() {
+      if (!this.running) {
         return true;
       }
       return false;

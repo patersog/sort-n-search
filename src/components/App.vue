@@ -8,15 +8,17 @@
 		</header>
 		<action-bar 
 			:preSorted=preSorted 
-			:run=run
+			:running=running
 			:algorithm=algorithm
 			:algorithmType=algorithmType
 			v-on:request-pre-sort="handlePreSortRequest" 
 			v-on:request-algorithm="handleAlgorithmRequest"
 			v-on:run-algorithm="handleRunAlgorithm"
 			v-on:reset="handleReset"/>
-		<display v-if="!preSorted" :arr="arr" />
-		<display v-else :arr="sortedArray" />
+		<display v-if="!running && !preSorted" :displayArr="arr" :step="step" />
+		<display v-else-if="!running && preSorted" :displayArr="sortedArray" :step="step" />
+		<display v-else-if=" running && !preSorted" :displayArr="arr" :step="step" />
+		<display v-else :displayArr="sortedArray" :step="step" />
 		<foot />
   </div>
 </template>
@@ -27,18 +29,23 @@ import ActionBar from "./ActionBar";
 import Foot from "./Foot";
 
 import { algorithms, test } from "../algorithm_utils";
+import { Queue } from "../algorithm_utils/data_structures";
 
 export default {
   name: "App",
   data() {
     return {
       arr: [...test.arrayData],
-      display_arr: [],
-      actions: [],
+      displayArr: [],
+      steps: new Queue(),
+      step: {},
       algorithmType: "sort",
       algorithm: "",
+      searchTerm: "",
       preSorted: false,
-      run: false
+      running: false,
+      interval: 500,
+      intervalID: null
     };
   },
   methods: {
@@ -50,22 +57,57 @@ export default {
     },
     handleRunAlgorithm() {
       if (this.algorithm) {
-        console.log("running!");
-        this.run = true;
+        this.running = true;
+        const algo = algorithms[this.algorithmType][this.algorithm];
+        if (this.preSorted) {
+          this.displayArr = this.sortedArray;
+        } else {
+          this.displayArr = [...this.arr];
+        }
+
+        algo(this.displayArr, this.steps);
+
+        this.intervalID = setInterval(() => {
+          this.$nextTick(() => this.displayAlgorithm(this.steps));
+        }, this.interval);
+      } else {
+        this.running = false;
+      }
+    },
+    displayAlgorithm(steps) {
+      if (!steps.isEmpty() && steps.peek().action !== "done") {
+        this.step = steps.dequeue();
+      } else if (steps.isEmpty()) {
+        steps.enqueue({ action: "done" });
+      } else {
+        console.log("Finished!", steps.dequeue());
+        clearInterval(this.intervalID);
       }
     },
     handleReset() {
-      console.log("resetting application...");
+      console.log("reseting...");
+
+      this.running = false;
       this.arr = [...test.arrayData];
-      this.display_arr = [];
-      this.algorithmType = "sort";
+      this.displayArr = [];
+      this.steps = new Queue();
+      this.step = {};
       this.algorithm = "";
-      this.action = {};
+      this.searchTerm = "";
       this.preSorted = false;
-      this.run = false;
+      clearInterval(this.intervalID);
+    }
+  },
+  watch: {
+    running() {
+      if (this.running) {
+        console.log("running!");
+      } else {
+        console.log("stopped running...");
+      }
     },
-    getAlgorithm() {
-      console.log(this.algorithm);
+    algorithmType() {
+      this.handleReset();
     }
   },
   computed: {
