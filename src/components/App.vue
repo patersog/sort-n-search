@@ -38,7 +38,7 @@ export default {
       arr: [...test.arrayData],
       displayArr: [],
       steps: new Queue(),
-      step: {},
+      step: { action: "none", _i: null, _j: null, num: null },
       algorithmType: "sort",
       algorithm: "",
       searchTerm: "",
@@ -78,7 +78,7 @@ export default {
       if (!steps.isEmpty() && steps.peek().action !== "done") {
         this.step = steps.dequeue();
       } else if (steps.isEmpty()) {
-        steps.enqueue({ action: "done" });
+        steps.enqueue({ action: "done", _i: null, _j: null, num: null });
       } else {
         console.log("Finished!", steps.dequeue());
         clearInterval(this.intervalID);

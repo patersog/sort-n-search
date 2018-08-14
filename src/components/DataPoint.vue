@@ -1,6 +1,6 @@
 
 <template>
-	<li class='data-point'>
+	<li :class="dataPointClass">
 		<div class="data-value">{{value}}</div>
 	</li>
 </template>
@@ -20,11 +20,11 @@ export default {
     dataPointClass() {
       switch (this.state) {
         case "swap":
-          return "data-value swap";
+          return "data-point swap";
         case "compare":
-          return "data-value compare";
+          return "data-point compare";
         default:
-          return "data-value";
+          return "data-point";
       }
     }
   }
@@ -34,13 +34,20 @@ export default {
 <style scoped>
 .data-point {
   background-color: #415972;
-  border: 1px solid #415972;
+  border: 3px solid #415972;
   border-radius: 3px;
   display: inline-block;
   width: 1.5em;
   height: 1.5em;
   padding: 0.5em;
   margin: 0.2em;
+  transition: 0.5s ease all;
+}
+
+.data-point:hover {
+  border-color: lightblue;
+  border-style: double;
+  transition: 0.5s ease all;
 }
 
 .data-value {

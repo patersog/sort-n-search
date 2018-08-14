@@ -2,20 +2,22 @@
 	<div class="display">
 		<div class="list-display">
 			<ul class="data-list">
-				<data-point v-for="(value, index) in displayArray" :key="index" :value="value" :state="step._i === index || step._j === index ? step.action : step.action"></data-point>
+				<data-point v-for="(p, index) in displayArray" :key="index" :value="p.val" :state="step._i === index || step._j === index ? p.action : p.action"></data-point>
 			</ul>
 		</div>
-		<div class="action">
-			<span>Action: {{step.action}}</span>
-			<span>Comparing: {{!step._i && !step._j? "nothing" : step._i + " with " + step._j}}</span>
-			<span>Step: {{!step.num ? "none" : step.num}}</span>
+		<div class="step-display">
+			<div class="step">
+				<span>Action: {{step.action}}</span>
+				<span>Comparing: {{!step._i && !step._j? "nothing" : step._i + " with " + step._j}}</span>
+				<span>Step: {{!step.num ? "none" : step.num}}</span>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
 import DataPoint from "./DataPoint";
-const validate = { compare: true, swap: true, done: true, none: true };
+
 export default {
   name: "display",
   props: {
@@ -25,24 +27,33 @@ export default {
     },
     step: {
       type: Object,
-      default: function() {
+      default() {
         return { action: "none", _i: null, _j: null, num: null };
-      },
-      validator: function(step) {
-        return validate[step.action];
       }
     }
   },
   data() {
     return {
-	  displayArray: [...this.displayArr],
-	  step: {}
+      displayArray: this.displayArr.map(value => {
+        const el = { action: "none", val: value };
+        return el;
+      })
     };
   },
   watch: {
-	  step() {
-
-	  },
+    step: function(newStep) {
+      const { _i, _j, action } = newStep;
+      if (this.displayArray[_i].action !== action) {
+        this.displayArray[_i].action = action;
+      }
+      if (this.displayArray[_j].action !== action) {
+        this.displayArray[_j].action = action;
+      }
+    },
+    displayArray: function(newArr) {
+      console.log(newArr);
+    }
+  },
   components: {
     DataPoint
   }
@@ -63,7 +74,14 @@ export default {
   max-width: 650px;
 }
 
-.action {
+.step-display {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.step {
+  text-align: left;
   display: flex;
   flex-direction: column;
 }

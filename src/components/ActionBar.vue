@@ -121,9 +121,9 @@ export default {
   color: lightblue;
 }
 .algo-select::after {
-  -webkit-transition: 0.8s all ease;
-  -o-transition: 0.8s all ease;
-  transition: 0.8s all ease;
+  -webkit-transition: 0.5s all ease;
+  -o-transition: 0.5s all ease;
+  transition: 0.5s all ease;
 }
 
 /* STYLES FOR CONTROLLER */
@@ -138,12 +138,12 @@ export default {
   margin-right: 0.4em;
   width: 10em;
   text-align: center;
-  transition: 800ms ease all;
+  transition: 0.5s ease all;
 }
 
 .control-btn:hover {
   color: lightblue;
-  transition: 800ms ease all;
+  transition: 0.5s ease all;
 }
 
 .control-btn:disabled {
@@ -153,6 +153,7 @@ export default {
 
 .clicked {
   border-color: lightblue;
+  border-style: double;
   color: lightblue;
 }
 
