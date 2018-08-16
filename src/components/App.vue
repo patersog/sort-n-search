@@ -140,19 +140,20 @@ input[type="radio"] {
 
 input[type="radio"]:checked + label {
   color: rgb(173, 216, 230);
-  border-bottom: 1px solid rgba(173, 216, 230);
+  border-bottom: 3px solid rgba(173, 216, 230);
 }
 
 label + input[type="radio"] + label {
-  border-left: 1px solid rgba(173, 216, 230);
+  border-left: 3px solid rgba(173, 216, 230);
 }
 
 label {
   color: rgb(22, 22, 22);
   font-size: 2em;
   display: inline-block;
-  border: 1px solid rgb(44, 62, 80);
-  border-radius: 3px;
+  border: 3px solid rgb(44, 62, 80);
+  background-color: rgb(52, 73, 94);
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   padding: 0.2em 0.5em;
@@ -166,17 +167,17 @@ label {
 
 .sort-label:hover,
 .search-label:hover {
-  border-bottom: 1px solid rgba(173, 216, 230);
+  border-bottom: 3px solid rgba(173, 216, 230);
 }
 
 .search-label {
   margin-left: 0.1em;
-  border-left: 1px solid rgba(173, 216, 230);
+  border-left: 3px solid rgba(173, 216, 230);
 }
 
 .sort-label {
   margin-right: 0.1em;
-  border-right: 1px solid rgba(173, 216, 230);
+  border-right: 3px solid rgba(173, 216, 230);
 }
 
 .radio-group {
