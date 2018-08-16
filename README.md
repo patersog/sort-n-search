@@ -10,7 +10,7 @@ This project was generated using [Vue CLI](https://cli.vuejs.org/).
 
 ## Screen Shot
 
-![The App](https//c1.staticflickr.com/2/1794/43171614535_42103aa323_c.jpg)
+![The App](https://c1.staticflickr.com/2/1794/43171614535_42103aa323_c.jpg)
 
 ### ToDo
 
