@@ -7,7 +7,7 @@
 			</div>
 			<div class="bottom">
 				<div class="algo-select">
-					<select class="select" v-model="selected">
+					<select aria-label="algorithm select" class="select" v-model="selected">
 						<option disabled value="">algorithms</option>
 						<option v-for="(option, index) in options" :key="index" :value="option">{{option}}</option>
 					</select>
@@ -106,6 +106,10 @@ export default {
   vertical-align: middle;
 }
 
+.algo-select:hover {
+  color: rgb(0, 245, 205);
+}
+
 .algo-select::before,
 .algo-select::after {
   content: "";
@@ -115,7 +119,7 @@ export default {
 
 .algo-select::after {
   content: "\25BC";
-  color: rgb(22, 22, 22);
+  color: rgb(0, 245, 205);
   line-height: 1;
   height: 1em;
   right: 0.45em;
@@ -133,7 +137,8 @@ export default {
 }
 
 .select {
-  background: rgb(52, 73, 94);
+  cursor: pointer;
+  background: rgb(0, 44, 66);
   color: rgb(173, 216, 230);
   font-size: inherit;
   padding: 0.5em;
@@ -144,41 +149,16 @@ export default {
   margin: 0;
   border-radius: 3px;
   text-indent: 0.01px;
-  text-overflow: "";
   -webkit-appearance: button;
 }
-
-/* .algo-select::after {
-  content: "\25BC";
-  position: absolute;
-  border-top-right-radius: 0.25em;
-  border-bottom-right-radius: 0.25em;
-  font-size: 1em;
-  height: 1.6em;
-  top: -0.23em;
-  padding: 0.3em 0.3em 0.1em 0.1em;
-  color: rgb(22, 22, 22);
-  background: rgb(52, 73, 94);
-  pointer-events: none;
-  -webkit-transition: 0.5s all ease;
-  -o-transition: 0.5s all ease;
-  transition: 0.5s all ease;
-}
-
-.algo-select::after:hover {
-  color: rgb(173, 216, 230);
-}
-
-.algo-select:hover::after {
-  color: rgb(173, 216, 230);
-} */
 
 /* STYLES FOR CONTROLLER */
 
 .control-btn {
-  background-color: rgb(52, 73, 94);
+  color: rgb(0, 245, 205);
+  background-color: rgb(0, 44, 66);
   border-radius: 3px;
-  border: 1px solid rgb(44, 62, 80);
+  border: 3px solid rgb(0, 44, 66);
   cursor: pointer;
   font-size: inherit;
   font-weight: bold;
@@ -190,30 +170,34 @@ export default {
 }
 
 .control-btn:hover {
-  color: rgb(173, 216, 230);
+  border-bottom-color: rgb(0, 245, 205);
   transition: 0.5s ease all;
 }
 
 .control-btn:disabled {
-  background-color: transparent;
-  color: rgb(22, 22, 22);
+  color: rgb(106, 155, 147);
+  cursor: default;
+}
+
+.control-btn:disabled:hover {
+  border-color: rgb(0, 44, 66);
 }
 
 .clicked {
-  border-color: rgb(173, 216, 230);
-  border-style: double;
-  color: rgb(173, 216, 230);
-}
-
-.clicked:hover {
-  color: rgb(22, 22, 22);
+  border-color: rgb(0, 245, 205);
+  border-style: solid;
+  color: rgb(0, 245, 205);
 }
 
 .not-clicked {
-  color: rgb(22, 22, 22);
+  color: rgb(0, 245, 205);
 }
 
-select {
+.clicked:hover {
+  border-color: rgb(0, 44, 66);
+}
+
+/* select {
   -webkit-appearance: none;
   -moz-appearance: none;
   -ms-appearance: none;
@@ -222,7 +206,7 @@ select {
   border: 0;
   border-top-left-radius: 0.25em;
   border-bottom-left-radius: 0.25em;
-  background: rgb(52, 73, 94);
+  background: rgb(0, 44, 66);
   background-image: none;
   text-align: center;
 }
@@ -232,11 +216,11 @@ select {
   height: 100%;
   margin: 0;
   padding: 0 0 0 0.5em;
-  color: rgb(173, 216, 230);
+  color: rgb(106, 155, 147);
   cursor: pointer;
 }
 
 select::-ms-expand {
   display: none;
-}
+} */
 </style>

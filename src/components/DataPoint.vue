@@ -33,35 +33,44 @@ export default {
 
 <style scoped>
 .data-point {
-  background-color: rgb(65, 89, 114);
-  border: 3px solid rgb(65, 89, 114);
+  position: relative;
+  background-color: rgb(0, 44, 66);
+  border: 3px solid rgb(0, 44, 66);
   border-radius: 3px;
   display: inline-block;
-  width: 1.5em;
-  height: 1.5em;
-  padding: 0.5em;
-  margin: 0.2em;
+  margin: 0.25em;
+  width: 3em;
+  height: 3em;
   transition: 0.5s ease all;
 }
 
 .data-point:hover {
-  border-color: rgb(173, 216, 230);
-  border-style: double;
+  color: rgb(0, 255, 162);
+  border-color: rgb(0, 255, 162);
+  border-style: solid;
   transition: 0.5s ease all;
 }
 
+.data-point:hover > .data-value {
+  color: rgb(0, 255, 162);
+}
+
 .data-value {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+  position: absolute;
+  margin: auto;
+  top: 25%;
+  left: 25%;
+  right: 25%;
+  bottom: 25%;
   font-weight: 600;
   font-family: "Roboto Mono", monospace;
-  color: rgb(22, 22, 22);
+  color: rgb(106, 155, 147);
+  transition: 0.5s ease all;
 }
 
 .compare {
-  color: rgb(255, 0, 0);
-  border-color: rgb(255, 0, 0);
+  color: rgb(0, 255, 162);
+  border-color: rgb(0, 255, 162);
 }
 
 .swap {

@@ -1,11 +1,19 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+  
+html {
+  height: 100%;
+}
+
 body {
-	margin: 0;
-	padding: 0;
-	color: rgb(85, 85, 85);
-	background-color: rgb(44, 62, 80);
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgb(0, 0, 0);
+  background-color: rgb(0, 68, 102);
+  height: 100%;
 }
 
 fieldset {

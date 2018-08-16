@@ -1,24 +1,35 @@
 import { swap } from "./sort-utils";
-let step = 0;
 const bubble = (list, q) => {
-  for (let i = list.length; i > 0; i--) {
-    for (let j = 0; j < i; j++) {
+  let swapped = true;
+  let step = 0;
+  while (swapped) {
+    swapped = false;
+    for (let i = 0; i < list.length; i++) {
       step++;
       q.enqueue({
         action: "compare",
-        _i: j,
-        _j: j + 1,
+        _i: i,
+        val_i: list[i],
+        _j: i + 1,
+        val_j: list[i + 1],
         num: step
       });
-      if (list[j + 1] < list[j]) {
+      if (
+        list[i] !== undefined &&
+        list[i + 1] !== undefined &&
+        list[i] > list[i + 1]
+      ) {
         step++;
         q.enqueue({
           action: "swap",
-          _i: j,
-          _j: j + 1,
+          _i: i,
+          val_i: list[i],
+          _j: i + 1,
+          val_j: list[i + 1],
           num: step
         });
-        swap(list, j, j + 1);
+        swap(list, i, i + 1);
+        swapped = true;
       }
     }
   }

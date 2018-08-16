@@ -5,11 +5,11 @@
 				<data-point v-for="(p, index) in display" :key="index" :value="p.val" :state="step._i === index || step._j === index ? p.action : p.action"></data-point>
 			</ul>
 		</div>
-		<div class="step-display">
+		<div :class="stepDisplayClass">
 			<div class="step">
-				<span>Action: {{step.action}}</span>
-				<span>Comparing: {{!step._i && !step._j? "nothing" : step._i + " with " + step._j}}</span>
-				<span>Step: {{!step.num ? "none" : step.num}}</span>
+				<div>Action: <span> {{step.action}}</span></div>
+				<div>Comparing: <span>{{!step._i && !step._j? "none" : step._i + " with " + step._j}}</span></div>
+				<div>Step: <span>{{!step.num ? "none" : step.num}}</span></div>
 			</div>
 		</div>
 	</div>
@@ -62,12 +62,19 @@ export default {
       if (this.run) {
         this.display = newArr;
       } else {
-        console.log("run");
         this.display = testingData.t_array.map(value => {
           const el = { action: "none", val: value };
           return el;
         });
       }
+    }
+  },
+  computed: {
+    stepDisplayClass: function() {
+      if (this.run) {
+        return "step-display run";
+      }
+      return "step-display";
     }
   },
   components: {
@@ -78,10 +85,13 @@ export default {
 
 <style scoped>
 .display {
+  background-color: rgb(0, 44, 66);
   display: flex;
+  border-radius: 3px;
   flex-direction: column;
-  justify-content: space-around;
-  height: 80vh;
+  justify-content: space-evenly;
+  height: 100%;
+  margin: 1em auto;
 }
 .data-list {
   list-style-type: none;
@@ -91,14 +101,27 @@ export default {
 }
 
 .step-display {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  font-weight: bold;
+  display: block;
+  margin: 0 auto;
+  width: 33%;
+}
+
+.run > div {
+  color: rgb(0, 255, 162);
 }
 
 .step {
+  padding: 0.25em;
+  color: rgb(106, 155, 147);
+  border-radius: 3px;
   text-align: left;
   display: flex;
   flex-direction: column;
+}
+
+.step > div {
+  display: flex;
+  justify-content: space-between;
 }
 </style>
