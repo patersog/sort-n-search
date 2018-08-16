@@ -2,7 +2,7 @@
 	<div class="display">
 		<div class="list-display">
 			<ul class="data-list">
-				<data-point v-for="(p, index) in displayArray" :key="index" :value="p.val" :state="step._i === index || step._j === index ? p.action : p.action"></data-point>
+				<data-point v-for="(p, index) in display" :key="index" :value="p.val" :state="step._i === index || step._j === index ? p.action : p.action"></data-point>
 			</ul>
 		</div>
 		<div class="step-display">
@@ -18,40 +18,56 @@
 <script>
 import DataPoint from "./DataPoint";
 
+import { testingData } from "../algorithm_utils";
+
 export default {
   name: "display",
   props: {
-    displayArr: {
-      type: Array,
+    run: {
+      type: Boolean,
+      required: true
+    },
+    preSort: {
+      type: Boolean,
       required: true
     },
     step: {
       type: Object,
-      default() {
-        return { action: "none", _i: null, _j: null, num: null };
-      }
+      required: true
     }
   },
   data() {
     return {
-      displayArray: this.displayArr.map(value => {
+      display: testingData.t_array.map(value => {
         const el = { action: "none", val: value };
         return el;
       })
     };
   },
   watch: {
-    step: function(newStep) {
-      const { _i, _j, action } = newStep;
-      if (this.displayArray[_i].action !== action) {
-        this.displayArray[_i].action = action;
-      }
-      if (this.displayArray[_j].action !== action) {
-        this.displayArray[_j].action = action;
+    step: function(newStep, oldStep) {
+      if (newStep.action !== "none") {
+        this.display[oldStep._i].action = "none";
+        this.display[oldStep._j].action = "none";
+        this.display[newStep._i].action = newStep.action;
+        this.display[newStep._j].action = newStep.action;
+        if (newStep.action === "swap") {
+          let temp = this.display[newStep._i];
+          this.display[newStep._i] = this.display[newStep._j];
+          this.display[newStep._j] = temp;
+        }
       }
     },
-    displayArray: function(newArr) {
-      console.log(newArr);
+    display: function(newArr) {
+      if (this.run) {
+        this.display = newArr;
+      } else {
+        console.log("run");
+        this.display = testingData.t_array.map(value => {
+          const el = { action: "none", val: value };
+          return el;
+        });
+      }
     }
   },
   components: {

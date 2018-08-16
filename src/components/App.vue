@@ -2,24 +2,20 @@
   <div id="app">
 	  	<header>
 			<div class="radio-group">
-				<input type="radio" id="sort" name="algo-type" v-model="algorithmType" value="sort" checked><label class="sort-label" for="sort">sort</label>
-				<input type="radio" id="search" name="algo-type" v-model="algorithmType" value="search"><label class="search-label" for="search">search</label>
+				<input type="radio" id="sort" name="algo-type" v-model="algType" value="sort" checked><label class="sort-label" for="sort">sort</label>
+				<input type="radio" id="search" name="algo-type" v-model="algType" value="search"><label class="search-label" for="search">search</label>
 			</div>
 		</header>
 		<action-bar 
-			:preSorted=preSorted 
-			:running=running
-			:algorithm=algorithm
-			:algorithmType=algorithmType
-			v-on:request-pre-sort="handlePreSortRequest" 
+			:preSort=preSort 
+			:algorithm=algName
+			:algorithmType=algType
+			v-on:request-presort="handlePreSortRequest" 
 			v-on:request-algorithm="handleAlgorithmRequest"
 			v-on:run-algorithm="handleRunAlgorithm"
 			v-on:reset="handleReset"/>
-		<display v-if="!running && !preSorted" :displayArr="arr" :step="step" />
-		<display v-else-if="!running && preSorted" :displayArr="sortedArray" :step="step" />
-		<display v-else-if=" running && !preSorted" :displayArr="arr" :step="step" />
-		<display v-else :displayArr="sortedArray" :step="step" />
-		<foot />
+		<display :run="run" :preSort="preSort" :step="step" />
+		<foot/>
   </div>
 </template>
 
@@ -28,91 +24,85 @@ import Display from "./Display";
 import ActionBar from "./ActionBar";
 import Foot from "./Foot";
 
-import { algorithms, test } from "../algorithm_utils";
+import { algorithmMap, testingData } from "../algorithm_utils";
 import { Queue } from "../algorithm_utils/data_structures";
 
 export default {
   name: "App",
   data() {
     return {
-      arr: [...test.arrayData],
-      displayArr: [],
-      steps: new Queue(),
       step: { action: "none", _i: null, _j: null, num: null },
-      algorithmType: "sort",
-      algorithm: "",
-      searchTerm: "",
-      preSorted: false,
-      running: false,
-      interval: 500,
-      intervalID: null
+      steps: null,
+      algType: "sort",
+      algName: "",
+      run: false,
+      preSort: false,
+      interval: 2000,
+      intId: null
     };
   },
   methods: {
     handlePreSortRequest() {
-      this.preSorted = !this.preSorted;
+      this.preSort = !this.preSort;
     },
     handleAlgorithmRequest(requestedAlgorithm) {
-      this.algorithm = requestedAlgorithm;
+      this.algName = requestedAlgorithm;
     },
     handleRunAlgorithm() {
-      if (this.algorithm) {
-        this.running = true;
-        const algo = algorithms[this.algorithmType][this.algorithm];
-        if (this.preSorted) {
-          this.displayArr = this.sortedArray;
-        } else {
-          this.displayArr = [...this.arr];
-        }
-
-        algo(this.displayArr, this.steps);
-
-        this.intervalID = setInterval(() => {
-          this.$nextTick(() => this.displayAlgorithm(this.steps));
-        }, this.interval);
-      } else {
-        this.running = false;
+      this.running = true;
+      let { algType, algName } = this;
+      if (algName) {
+        const algorithm = algorithmMap[algType][algName];
+        this.process(algorithm, q => {
+          this.steps = q;
+          this.steps.enqueue({ action: "done", _i: null, _j: null, num: null });
+          this.intId = setInterval(() => {
+            this.$nextTick(() => this.processAction(this.steps));
+            if (this.steps.isEmpty()) {
+              clearInterval(this.intId);
+              this.intId = null;
+              this.steps = null;
+            }
+          }, this.interval);
+        });
       }
     },
-    displayAlgorithm(steps) {
-      if (!steps.isEmpty() && steps.peek().action !== "done") {
-        this.step = steps.dequeue();
-      } else if (steps.isEmpty()) {
-        steps.enqueue({ action: "done", _i: null, _j: null, num: null });
-      } else {
-        console.log("Finished!", steps.dequeue());
-        clearInterval(this.intervalID);
+    process(algorithm, callback) {
+      const stepQ = new Queue();
+      if (typeof callback === "function") {
+        let throwAway = this.preSort ? this.sortedArray : this.unsortedArray;
+        algorithm(throwAway, stepQ);
+        return callback(stepQ);
       }
+      return stepQ;
+    },
+    processAction(steps) {
+      this.step = steps.dequeue();
     },
     handleReset() {
-      console.log("reseting...");
-
+      this.step = { action: "none", _i: null, _j: null, num: null };
+      this.algType = "sort";
+      this.algName = "";
       this.running = false;
-      this.arr = [...test.arrayData];
-      this.displayArr = [];
-      this.steps = new Queue();
-      this.step = {};
-      this.algorithm = "";
-      this.searchTerm = "";
-      this.preSorted = false;
-      clearInterval(this.intervalID);
+      this.preSort = false;
+      this.interval = 2000;
+
+      clearInterval(this.intId);
+      this.intId = null;
+      this.steps = null;
     }
   },
   watch: {
-    running() {
-      if (this.running) {
-        console.log("running!");
-      } else {
-        console.log("stopped running...");
-      }
-    },
-    algorithmType() {
+    algorithmType: function() {
       this.handleReset();
     }
   },
   computed: {
     sortedArray: function() {
-      return this.arr.map(el => el).sort((a, b) => a - b);
+      return testingData.t_array.map(el => el).sort((a, b) => a - b);
+    },
+    unsortedArray: function() {
+      return testingData.t_array.map(el => el);
     }
   },
   components: {
@@ -140,7 +130,7 @@ header {
 }
 
 h1 {
-  color: whitesmoke;
+  color: rgb(245, 245, 245);
 }
 
 input[type="radio"] {
@@ -149,19 +139,19 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked + label {
-  color: lightblue;
-  border-bottom: 1px solid lightblue;
+  color: rgb(173, 216, 230);
+  border-bottom: 1px solid rgba(173, 216, 230);
 }
 
 label + input[type="radio"] + label {
-  border-left: 1px solid lightblue;
+  border-left: 1px solid rgba(173, 216, 230);
 }
 
 label {
   color: rgb(22, 22, 22);
   font-size: 2em;
   display: inline-block;
-  border: 1px solid #2c3e50;
+  border: 1px solid rgb(44, 62, 80);
   border-radius: 3px;
   cursor: pointer;
   font-weight: bold;
@@ -176,17 +166,17 @@ label {
 
 .sort-label:hover,
 .search-label:hover {
-  border-bottom: 1px solid lightblue;
+  border-bottom: 1px solid rgba(173, 216, 230);
 }
 
 .search-label {
   margin-left: 0.1em;
-  border-left: 1px solid lightblue;
+  border-left: 1px solid rgba(173, 216, 230);
 }
 
 .sort-label {
   margin-right: 0.1em;
-  border-right: 1px solid lightblue;
+  border-right: 1px solid rgba(173, 216, 230);
 }
 
 .radio-group {

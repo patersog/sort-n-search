@@ -1,14 +1,14 @@
 const sort = require("./sort");
 const search = require("./search");
-const { array: arrayData } = require("./data/array-data");
+const { array: t_array } = require("./data/array-data");
 
-const algorithms = {
+const algorithmMap = {
   search,
   sort
 };
 
-const test = {
-  arrayData
+const testingData = {
+  t_array
 };
 
-export { algorithms, test };
+export { algorithmMap, testingData };

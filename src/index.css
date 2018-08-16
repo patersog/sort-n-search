@@ -1,8 +1,8 @@
 body {
 	margin: 0;
 	padding: 0;
-	color: #555;
-	background-color: #2c3e50;
+	color: rgb(85, 85, 85);
+	background-color: rgb(44, 62, 80);
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;

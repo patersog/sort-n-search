@@ -15,23 +15,23 @@
 <script>
 export default {
   props: {
-    preSorted: Boolean,
+    preSort: Boolean,
+    run: Boolean,
     algorithmType: String,
-    running: Boolean
+    algorithmName: String
   },
   data() {
     return {
-      selected: "",
-      searchTerm: ""
+      selected: ""
     };
   },
   methods: {
     requestPreSort() {
-      this.$emit("request-pre-sort");
+      this.$emit("request-presort");
     },
     requestReset() {
-      this.$emit("reset");
       this.selected = "";
+      this.$emit("reset");
     },
     requestAlgorithm(selected) {
       this.$emit("request-algorithm", selected);
@@ -50,12 +50,10 @@ export default {
   },
   computed: {
     preSortButtonClass() {
-      return !this.preSorted
-        ? "control-btn not-clicked"
-        : "control-btn clicked";
+      return !this.preSort ? "control-btn not-clicked" : "control-btn clicked";
     },
     runButtonClass() {
-      return !this.running ? "control-btn not-clicked" : "control-btn clicked";
+      return !this.run ? "control-btn not-clicked" : "control-btn clicked";
     },
     options() {
       switch (this.algorithmType) {
@@ -74,10 +72,10 @@ export default {
       return false;
     },
     canSort() {
-      if (!this.running) {
-        return true;
+      if (this.run) {
+        return false;
       }
-      return false;
+      return true;
     }
   }
 };
@@ -93,11 +91,11 @@ export default {
 }
 
 .algo-select {
-  border: 1px solid #34495e;
+  border: 1px solid rgb(52, 73, 94);
   border-radius: 0.25em;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  background: #34495e;
+  background: rgb(52, 73, 94);
   display: block;
   height: 1.6em;
   margin-left: 0.1em;
@@ -113,12 +111,12 @@ export default {
   font-size: 1em;
   padding: 0.1em 0.3em 0.1em 0.1em;
   color: rgb(22, 22, 22);
-  background: #34495e;
+  background: rgb(52, 73, 94);
   pointer-events: none;
 }
 
 .algo-select:hover::after {
-  color: lightblue;
+  color: rgb(173, 216, 230);
 }
 .algo-select::after {
   -webkit-transition: 0.5s all ease;
@@ -129,9 +127,9 @@ export default {
 /* STYLES FOR CONTROLLER */
 
 .control-btn {
-  background-color: #34495e;
+  background-color: rgb(52, 73, 94);
   border-radius: 3px;
-  border: 1px solid #2c3e50;
+  border: 1px solid rgb(44, 62, 80);
   cursor: pointer;
   font-weight: 400;
   height: 2em;
@@ -142,7 +140,7 @@ export default {
 }
 
 .control-btn:hover {
-  color: lightblue;
+  color: rgb(173, 216, 230);
   transition: 0.5s ease all;
 }
 
@@ -152,9 +150,9 @@ export default {
 }
 
 .clicked {
-  border-color: lightblue;
+  border-color: rgb(173, 216, 230);
   border-style: double;
-  color: lightblue;
+  color: rgb(173, 216, 230);
 }
 
 .clicked:hover {
@@ -174,7 +172,7 @@ select {
   border: 0;
   border-top-left-radius: 0.25em;
   border-bottom-left-radius: 0.25em;
-  background: #34495e;
+  background: rgb(52, 73, 94);
   background-image: none;
   text-align: center;
 }
@@ -184,7 +182,7 @@ select {
   height: 100%;
   margin: 0;
   padding: 0 0 0 0.5em;
-  color: lightblue;
+  color: rgb(173, 216, 230);
   cursor: pointer;
 }
 

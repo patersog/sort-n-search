@@ -33,8 +33,8 @@ export default {
 
 <style scoped>
 .data-point {
-  background-color: #415972;
-  border: 3px solid #415972;
+  background-color: rgb(65, 89, 114);
+  border: 3px solid rgb(65, 89, 114);
   border-radius: 3px;
   display: inline-block;
   width: 1.5em;
@@ -45,7 +45,7 @@ export default {
 }
 
 .data-point:hover {
-  border-color: lightblue;
+  border-color: rgb(173, 216, 230);
   border-style: double;
   transition: 0.5s ease all;
 }
@@ -60,12 +60,12 @@ export default {
 }
 
 .compare {
-  color: rgb(118, 209, 57);
-  border-color: rgb(118, 209, 57);
+  color: rgb(255, 0, 0);
+  border-color: rgb(255, 0, 0);
 }
 
 .swap {
-  color: rgb(224, 115, 43);
-  border-color: rgb(224, 115, 43);
+  color: rgb(251, 255, 0);
+  border-color: rgb(251, 255, 0);
 }
 </style>

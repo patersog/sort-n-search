@@ -10,7 +10,7 @@ export default {};
 
 <style scoped>
 footer {
-  background-color: #2c3e50;
+  background-color: rgb(44, 62, 80);
   padding: 0.5em 0.25em;
   position: fixed;
   bottom: 0;
@@ -21,7 +21,7 @@ footer {
 
 div p {
   font-size: 1.2ch;
-  color: lightblue;
+  color: rgb(173, 216, 230);
 }
 
 nav {
@@ -32,7 +32,7 @@ nav {
 a {
   text-decoration: none;
   margin: auto 0.5em;
-  color: whitesmoke;
+  color: rgb(245, 245, 245);
   text-transform: capitalize;
 }
 </style>
