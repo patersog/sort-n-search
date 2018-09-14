@@ -2,14 +2,14 @@
 	<div class="display">
 		<div class="list-display">
 			<ul class="data-list">
-				<data-point v-for="(p, index) in display" :key="index" :value="p.val" :state="step._i === index || step._j === index ? p.action : p.action"></data-point>
+				<data-point v-for="(p, index) in displayData" :key="index" :value="p.val" :state="step._i === index || step._j === index ? p.action : p.action"></data-point>
 			</ul>
 		</div>
-		<div :class="stepDisplayClass">
+		<div class="step-display">
 			<div class="step">
 				<div>Action: <span> {{step.action}}</span></div>
 				<div>Comparing: <span>{{!step._i && !step._j? "none" : step._i + " with " + step._j}}</span></div>
-				<div>Step: <span>{{!step.num ? "none" : step.num}}</span></div>
+				<div>Step: <span> {{!step.num ? "none" : step.num}}</span></div>
 			</div>
 		</div>
 	</div>
@@ -18,55 +18,43 @@
 <script>
 import DataPoint from "./DataPoint";
 
-import { testingData } from "../algorithm_utils";
-
 export default {
   name: "display",
   props: {
+    step: {
+      type: Object,
+      required: true
+    },
     run: {
       type: Boolean,
       required: true
     },
-    preSort: {
-      type: Boolean,
-      required: true
-    },
-    step: {
-      type: Object,
+    toDisplay: {
+      type: Array,
       required: true
     }
   },
   data() {
     return {
-      display: testingData.t_array.map(value => {
-        const el = { action: "none", val: value };
-        return el;
-      })
+      displayData: this.toDisplay
     };
   },
   watch: {
     step: function(newStep, oldStep) {
       if (newStep.action !== "none") {
-        this.display[oldStep._i].action = "none";
-        this.display[oldStep._j].action = "none";
-        this.display[newStep._i].action = newStep.action;
-        this.display[newStep._j].action = newStep.action;
+        this.displayData[oldStep._i].action = "none";
+        this.displayData[oldStep._j].action = "none";
+        this.displayData[newStep._i].action = newStep.action;
+        this.displayData[newStep._j].action = newStep.action;
         if (newStep.action === "swap") {
           let temp = this.display[newStep._i];
-          this.display[newStep._i] = this.display[newStep._j];
-          this.display[newStep._j] = temp;
+          this.displayData[newStep._i] = this.displayData[newStep._j];
+          this.displayData[newStep._j] = temp;
         }
       }
     },
-    display: function(newArr) {
-      if (this.run) {
-        this.display = newArr;
-      } else {
-        this.display = testingData.t_array.map(value => {
-          const el = { action: "none", val: value };
-          return el;
-        });
-      }
+    toDisplay: function(newDisplay) {
+      this.displayData = newDisplay;
     }
   },
   computed: {
@@ -107,7 +95,7 @@ export default {
   width: 33%;
 }
 
-.run > div {
+.step-display .run {
   color: rgb(0, 255, 162);
 }
 

@@ -170,7 +170,7 @@ export default {
 }
 
 .control-btn:hover {
-  border-bottom-color: rgb(0, 245, 205);
+  border-color: rgb(0, 245, 205);
   transition: 0.5s ease all;
 }
 
@@ -191,10 +191,6 @@ export default {
 
 .not-clicked {
   color: rgb(0, 245, 205);
-}
-
-.clicked:hover {
-  border-color: rgb(0, 44, 66);
 }
 
 /* select {

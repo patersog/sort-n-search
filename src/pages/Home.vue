@@ -1,13 +1,11 @@
 <template>
-	<main id="app">
-	  	<header>
-			<h1>
-				<div class="radio-group">
-					<input type="radio" id="sort" name="algo-type" v-model="algType" value="sort" checked><label class="sort-label" for="sort">sort</label>
-					<input type="radio" id="search" name="algo-type" v-model="algType" value="search"><label class="search-label" for="search">search</label>
-				</div>
-			</h1>
-		</header>
+	<navigation>
+		<h2 title="choose an alogirthm type">
+			<div class="radio-group">
+				<input type="radio" id="sort" name="algo-type" v-model="algType" value="sort" checked><label class="sort-label" for="sort">sort</label>
+				<input type="radio" id="search" name="algo-type" v-model="algType" value="search"><label class="search-label" for="search">search</label>
+			</div>
+		</h2>
 		<action-bar 
 			:preSort=preSort 
 			:algorithm=algName
@@ -17,20 +15,20 @@
 			v-on:request-algorithm="handleAlgorithmRequest"
 			v-on:run-algorithm="handleRunAlgorithm"
 			v-on:reset="handleReset"/>
-		<display :run="run" :preSort="preSort" :step="step" />
-	</main>
+		<display :step="step" :run="run" :toDisplay="preSort ? sortedArray : unsortedArray" />
+	</navigation>
 </template>
 
 <script>
-import Display from "./Display";
-import ActionBar from "./ActionBar";
-import Foot from "./Foot";
+import Navigation from "../components/Navigation";
+import Display from "../components/Display";
+import ActionBar from "../components/ActionBar";
 
 import { algorithmMap, testingData } from "../algorithm_utils";
 import { Queue } from "../algorithm_utils/data_structures";
 
 export default {
-  name: "App",
+  name: "Home",
   data() {
     return {
       step: {
@@ -122,41 +120,31 @@ export default {
   },
   computed: {
     sortedArray: function() {
-      return testingData.t_array.map(el => el).sort((a, b) => a - b);
+      return testingData.t_array
+        .map(el => {
+          return { action: "none", val: el };
+        })
+        .sort((a, b) => a.val - b.val);
     },
     unsortedArray: function() {
-      return testingData.t_array.map(el => el);
+      return testingData.t_array.map(el => {
+        return { action: "none", val: el };
+      });
     }
   },
   components: {
+    Navigation,
     Display,
-    ActionBar,
-    Foot
+    ActionBar
   }
 };
 </script>
 
 
 <style>
-#app {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  margin: 0 auto;
-  max-width: 50em;
-  text-align: center;
-  font-family: "Helvetica", "Arial", sans-serif;
-  line-height: 1.5em;
-  padding: 0.5em 0.33em;
-  height: 100%;
-}
-
-header {
+h2 {
   margin: 1em auto;
   text-align: center;
-}
-
-h1 {
   font-size: inherit;
   margin: 0;
   padding: 0;
@@ -171,10 +159,6 @@ input[type="radio"]:checked + label {
   color: rgb(0, 245, 205);
   border-color: rgb(0, 245, 205);
 }
-
-/* label + input[type="radio"] + label {
-  border-left: 3px solid rgba(173, 216, 230);
-} */
 
 label {
   color: rgb(0, 245, 205);
@@ -197,7 +181,7 @@ label {
 
 .sort-label:hover,
 .search-label:hover {
-  border-bottom: 3px solid rgba(173, 216, 230);
+  border: 3px solid rgba(173, 216, 230);
 }
 
 .search-label {
